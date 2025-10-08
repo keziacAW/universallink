@@ -161,24 +161,19 @@
                 console.log('[Deep Link] iOS: Attempting custom scheme fallback');
 
                 const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
-                let appOpened = false;
 
-                // Detect if app opens (user leaves page)
-                window.addEventListener('blur', () => { appOpened = true; });
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) appOpened = true;
-                });
+                // Create hidden iframe to try opening app without navigation
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = customScheme;
+                document.body.appendChild(iframe);
 
-                // Try custom scheme
-                window.location.href = customScheme;
-
-                // If app doesn't open, redirect to App Store
+                // Always redirect to App Store after timeout
+                // If app opens, user won't see the redirect (they'll be in the app)
                 setTimeout(() => {
-                    if (!appOpened) {
-                        document.getElementById('action').textContent = 'Redirecting to App Store...';
-                        window.location.href = CONFIG.iosAppStoreUrl;
-                    }
-                }, 2000);
+                    document.getElementById('action').textContent = 'Redirecting to App Store...';
+                    window.location.href = CONFIG.iosAppStoreUrl;
+                }, 2500);
 
             } else {
                 // Android: Use Intent URL for better detection
