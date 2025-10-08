@@ -154,15 +154,31 @@
 
             console.log('[Deep Link] Universal Link:', universalLink);
 
-            // For iOS: If this page loads, Universal Link didn't work
-            // App is not installed, redirect to App Store
+            // For iOS: If this page loads, Universal Link didn't work (opened from browser)
+            // Try custom scheme first, then fallback to App Store
             if (platform === 'ios') {
-                document.getElementById('action').textContent = 'Redirecting to App Store in 3 seconds...';
-                console.log('[Deep Link] iOS: App not installed, redirecting to App Store');
+                document.getElementById('action').textContent = 'Trying to open app...';
+                console.log('[Deep Link] iOS: Attempting custom scheme fallback');
 
+                const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
+                let appOpened = false;
+
+                // Detect if app opens (user leaves page)
+                window.addEventListener('blur', () => { appOpened = true; });
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) appOpened = true;
+                });
+
+                // Try custom scheme
+                window.location.href = customScheme;
+
+                // If app doesn't open, redirect to App Store
                 setTimeout(() => {
-                    window.location.href = CONFIG.iosAppStoreUrl;
-                }, 3000);
+                    if (!appOpened) {
+                        document.getElementById('action').textContent = 'Redirecting to App Store...';
+                        window.location.href = CONFIG.iosAppStoreUrl;
+                    }
+                }, 2000);
 
             } else {
                 // Android: Use Intent URL for better detection
