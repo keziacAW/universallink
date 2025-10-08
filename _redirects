@@ -1,8 +1,5 @@
 /.well-known/assetlinks.json /assetlinks.json 200
 
-# Serve landing page for root
-/ /landing.html 200
-
 # Serve index.html for deep link paths (Universal Link entry point)
 /create_portfolio /index.html 200
 
