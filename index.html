@@ -104,7 +104,9 @@
             if (platform === 'ios') {
                 console.log('[Deep Link] iOS: Universal Link failed, trying custom scheme');
 
-                const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
+                // Convert hyphen to underscore for app routing (create-portfolio → create_portfolio)
+                const appPath = path.replace(/-/g, '_');
+                const customScheme = `autowealth://${appPath}${queryString ? '?' + queryString : ''}`;
                 let appOpened = false;
 
                 // Detect if user leaves the page (app opened successfully)
@@ -132,7 +134,9 @@
 
             } else {
                 // Android: Use Intent URL for better detection
-                const intentUrl = `intent://${path}${queryString ? '?' + queryString : ''}#Intent;scheme=autowealth;package=sg.autowealth.mobile;S.browser_fallback_url=${encodeURIComponent(CONFIG.androidPlayStoreUrl)};end`;
+                // Convert hyphen to underscore for app routing (create-portfolio → create_portfolio)
+                const appPath = path.replace(/-/g, '_');
+                const intentUrl = `intent://${appPath}${queryString ? '?' + queryString : ''}#Intent;scheme=autowealth;package=sg.autowealth.mobile;S.browser_fallback_url=${encodeURIComponent(CONFIG.androidPlayStoreUrl)};end`;
 
                 console.log('[Deep Link] Android: Intent URL:', intentUrl);
                 window.location.href = intentUrl;
