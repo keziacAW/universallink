@@ -7,7 +7,9 @@
       "Bash(git commit:*)",
       "Read(//Users/keziac/Desktop/Mobileapp/autowealth_mobile_v3/**)",
       "Bash(cat:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(awk:*)",
+      "Bash(open /Users/keziac/Desktop/Staging/)"
     ],
     "deny": [],
     "ask": []

@@ -1,7 +1,8 @@
 /.well-known/assetlinks.json /assetlinks.json 200
 
-# Serve index.html for deep link paths (Universal Link entry point)
-/create_portfolio /index.html 200
+# Serve mobile PHP for /mobile path (Universal Link entry point)
+/mobile /mobile/index.php 200
+/mobile/* /mobile/index.php 200
 
 # Only redirect unknown paths to fallback
 /* /fallback.html 404
