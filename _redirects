@@ -1,0 +1,4 @@
+/.well-known/assetlinks.json /assetlinks.json 200
+
+# Catch-all: redirect any path to fallback page
+/* /fallback.html 200

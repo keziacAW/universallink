@@ -1,0 +1,14 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "6KKG662T5W.sg.autowealth.mobile",
+                "paths": [
+                    "/create-portfolio",
+                    "/create-portfolio/*"
+                ]
+            }
+        ]
+    }
+}

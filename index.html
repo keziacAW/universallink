@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-itunes-app" content="app-id=1582808842">
+    <title>AutoWealth - Portfolio Management</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            universalLinkDomain: 'https://awuniversal.pages.dev',
+            iosAppStoreUrl: 'https://apps.apple.com/id/app/autowealth/id1582808842',
+            androidPlayStoreUrl: 'https://play.google.com/store/apps/developer?id=AUTOWEALTH+PTE+LTD',
+            appDetectionTimeout: 1000
+        };
+
+        // Get URL parameters
+        function getParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const path = urlParams.get('path') || 'create_portfolio';
+
+            // Get all other params except 'path'
+            const otherParams = {};
+            for (const [key, value] of urlParams.entries()) {
+                if (key !== 'path') {
+                    otherParams[key] = value;
+                }
+            }
+
+            // Add default type if not provided and path is create_portfolio
+            if (!otherParams.type && path === 'create_portfolio') {
+                otherParams.type = 'cpf';
+            }
+
+            return {
+                path: path,
+                params: otherParams
+            };
+        }
+
+        // Build Universal Link
+        function buildDeepLink() {
+            const { path, params } = getParams();
+            const queryString = new URLSearchParams(params).toString();
+            return `${CONFIG.universalLinkDomain}/${path}${queryString ? '?' + queryString : ''}`;
+        }
+
+        // Detect platform
+        function getPlatform() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return 'ios';
+            }
+
+            if (/android/i.test(userAgent)) {
+                return 'android';
+            }
+
+            return 'web';
+        }
+
+        // Get store URL
+        function getStoreUrl() {
+            const platform = getPlatform();
+            return platform === 'ios' ? CONFIG.iosAppStoreUrl : CONFIG.androidPlayStoreUrl;
+        }
+
+        // Main handler
+        function handleRedirect() {
+            const platform = getPlatform();
+            const { path, params } = getParams();
+
+            console.log('[Deep Link] Platform:', platform);
+            console.log('[Deep Link] Path:', path);
+            console.log('[Deep Link] Params:', params);
+
+            if (platform === 'web') {
+                // Desktop: redirect to store directly
+                window.location.href = getStoreUrl();
+                return;
+            }
+
+            // Build URLs
+            const queryString = new URLSearchParams(params).toString();
+            const universalLink = `${CONFIG.universalLinkDomain}/${path}${queryString ? '?' + queryString : ''}`;
+
+            console.log('[Deep Link] Universal Link:', universalLink);
+
+            // For iOS: Use Universal Link (iOS handles app detection automatically)
+            if (platform === 'ios') {
+                console.log('[Deep Link] iOS: Using Universal Link');
+
+                // Universal Link will:
+                // - Open app if installed (automatically)
+                // - Open this webpage if NOT installed
+                // So we redirect to our own universal link, which will show fallback page
+                window.location.href = universalLink;
+
+            } else {
+                // Android: Use Intent URL for better detection
+                const intentUrl = `intent://${path}${queryString ? '?' + queryString : ''}#Intent;scheme=autowealth;package=sg.autowealth.mobile;S.browser_fallback_url=${encodeURIComponent(CONFIG.androidPlayStoreUrl)};end`;
+
+                console.log('[Deep Link] Android: Intent URL:', intentUrl);
+                window.location.href = intentUrl;
+            }
+        }
+
+        // Auto-redirect immediately
+        handleRedirect();
+    </script>
+</body>
+</html>

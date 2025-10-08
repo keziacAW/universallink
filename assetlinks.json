@@ -1,0 +1,13 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "sg.autowealth.mobile",
+            "sha256_cert_fingerprints": [
+                "54:68:B0:B2:83:33:92:0D:D9:1F:0F:C0:4D:8A:04:B1:7D:4C:3A:7D:A4:69:87:1A:08:27:1F:1F:28:F7:66:E5",
+                "F4:81:72:61:7C:AF:FD:7D:F5:C0:F1:83:84:4D:CA:78:F0:AB:7B:DD:9A:E0:5E:E8:5A:13:55:A1:E9:E7:3E:38"
+            ]
+        }
+    }
+]
