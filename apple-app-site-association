@@ -7,8 +7,23 @@
                 "paths": [
                     "/create-portfolio",
                     "/create-portfolio/*"
+                ],
+                "components": [
+                    {
+                        "/": "/create-portfolio",
+                        "comment": "Matches create-portfolio path"
+                    },
+                    {
+                        "/": "/create-portfolio/*",
+                        "comment": "Matches create-portfolio with any subpath"
+                    }
                 ]
             }
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "6KKG662T5W.sg.autowealth.mobile"
         ]
     }
 }

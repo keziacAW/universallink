@@ -28,7 +28,8 @@
         // Get URL parameters
         function getParams() {
             const urlParams = new URLSearchParams(window.location.search);
-            const path = urlParams.get('path') || 'create_portfolio';
+            // Use hyphen to match AASA file
+            const path = urlParams.get('path') || window.location.pathname.substring(1) || 'create-portfolio';
 
             // Get all other params except 'path'
             const otherParams = {};
@@ -38,8 +39,8 @@
                 }
             }
 
-            // Add default type if not provided and path is create_portfolio
-            if (!otherParams.type && path === 'create_portfolio') {
+            // Add default type if not provided and path is create-portfolio
+            if (!otherParams.type && path === 'create-portfolio') {
                 otherParams.type = 'cpf';
             }
 
@@ -98,15 +99,12 @@
 
             console.log('[Deep Link] Universal Link:', universalLink);
 
-            // For iOS: Use Universal Link (iOS handles app detection automatically)
+            // For iOS: Universal Link handles app detection automatically
             if (platform === 'ios') {
-                console.log('[Deep Link] iOS: Using Universal Link');
-
-                // Universal Link will:
-                // - Open app if installed (automatically)
-                // - Open this webpage if NOT installed
-                // So we redirect to our own universal link, which will show fallback page
-                window.location.href = universalLink;
+                console.log('[Deep Link] iOS: App not installed, redirecting to App Store');
+                // If this page loads, it means Universal Link didn't open the app
+                // So the app is not installed - redirect to store
+                window.location.href = CONFIG.iosAppStoreUrl;
 
             } else {
                 // Android: Use Intent URL for better detection
