@@ -6,64 +6,125 @@
     <meta name="apple-itunes-app" content="app-id=1582808842">
     <title>AutoWealth - Portfolio Management</title>
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: #f5f5f5;
-        }
-
-        .debug-info {
-            background: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin: 20px;
         }
 
-        .debug-info h3 {
-            margin-top: 0;
-            color: #333;
+        .container {
+            background: white;
+            padding: 48px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
         }
 
-        .debug-info p {
-            margin: 8px 0;
-            font-size: 14px;
-            color: #666;
+        .icon {
+            font-size: 72px;
+            margin-bottom: 24px;
+            animation: bounce 2s ease-in-out infinite;
         }
 
-        .status {
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin: 10px 0;
-            font-weight: bold;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        .status.error {
-            background: #fee;
-            color: #c33;
+        h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 16px;
+            font-weight: 700;
         }
 
-        .status.info {
-            background: #e3f2fd;
-            color: #1976d2;
+        .message {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+            animation: loading 1.4s ease-in-out infinite;
+        }
+
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .status-text {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .small-text {
+            color: #999;
+            font-size: 13px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .message {
+                font-size: 16px;
+            }
         }
 
     </style>
 </head>
 <body>
-    <div class="debug-info">
-        <h3>🔍 Universal Link Debug</h3>
-        <div class="status error">⚠️ Universal Link did NOT work - This page should not load if app is installed</div>
-        <p><strong>Platform:</strong> <span id="platform">...</span></p>
-        <p><strong>Path:</strong> <span id="path">...</span></p>
-        <p><strong>Params:</strong> <span id="params">...</span></p>
-        <p><strong>Action:</strong> <span id="action">...</span></p>
+    <div class="container">
+        <div class="icon">📱</div>
+        <h1>Download Our App Now!</h1>
+        <p class="message">Get started with AutoWealth and take control of your investment portfolio</p>
+
+        <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <p class="status-text" id="action">Opening App Store...</p>
+
+        <p class="small-text">Redirecting you in a moment</p>
     </div>
 
     <script>
@@ -133,15 +194,6 @@
             const platform = getPlatform();
             const { path, params } = getParams();
 
-            // Update UI
-            document.getElementById('platform').textContent = platform;
-            document.getElementById('path').textContent = path;
-            document.getElementById('params').textContent = JSON.stringify(params);
-
-            console.log('[Deep Link] Platform:', platform);
-            console.log('[Deep Link] Path:', path);
-            console.log('[Deep Link] Params:', params);
-
             if (platform === 'web') {
                 // Desktop: redirect to store directly
                 window.location.href = getStoreUrl();
@@ -150,15 +202,11 @@
 
             // Build URLs
             const queryString = new URLSearchParams(params).toString();
-            const universalLink = `${CONFIG.universalLinkDomain}/${path}${queryString ? '?' + queryString : ''}`;
-
-            console.log('[Deep Link] Universal Link:', universalLink);
 
             // For iOS: If this page loads, Universal Link didn't work (opened from browser)
             // Try custom scheme first, then fallback to App Store
             if (platform === 'ios') {
-                document.getElementById('action').textContent = 'Trying to open app...';
-                console.log('[Deep Link] iOS: Attempting custom scheme fallback');
+                document.getElementById('action').textContent = 'Opening AutoWealth...';
 
                 const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
 
@@ -171,7 +219,7 @@
                 // Always redirect to App Store after timeout
                 // If app opens, user won't see the redirect (they'll be in the app)
                 setTimeout(() => {
-                    document.getElementById('action').textContent = 'Redirecting to App Store...';
+                    document.getElementById('action').textContent = 'Opening App Store...';
                     window.location.href = CONFIG.iosAppStoreUrl;
                 }, 1000);
 
@@ -179,8 +227,7 @@
                 // Android: Use Intent URL for better detection
                 const intentUrl = `intent://${path}${queryString ? '?' + queryString : ''}#Intent;scheme=autowealth;package=sg.autowealth.mobile;S.browser_fallback_url=${encodeURIComponent(CONFIG.androidPlayStoreUrl)};end`;
 
-                document.getElementById('action').textContent = 'Trying to open app via Intent...';
-                console.log('[Deep Link] Android: Intent URL:', intentUrl);
+                document.getElementById('action').textContent = 'Opening AutoWealth...';
 
                 setTimeout(() => {
                     window.location.href = intentUrl;
