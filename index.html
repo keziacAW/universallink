@@ -105,14 +105,29 @@
                 console.log('[Deep Link] iOS: Universal Link failed, trying custom scheme');
 
                 const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
+                let appOpened = false;
+
+                // Detect if user leaves the page (app opened successfully)
+                const visibilityHandler = () => {
+                    if (document.hidden || document.visibilityState === 'hidden') {
+                        appOpened = true;
+                        console.log('[Deep Link] App opened successfully, canceling store redirect');
+                    }
+                };
+
+                document.addEventListener('visibilitychange', visibilityHandler);
+                window.addEventListener('blur', () => { appOpened = true; });
 
                 // Try to open via custom scheme
                 window.location.href = customScheme;
 
                 // If app doesn't open within 2 seconds, go to App Store
                 setTimeout(() => {
-                    console.log('[Deep Link] App not detected, redirecting to App Store');
-                    window.location.href = CONFIG.iosAppStoreUrl;
+                    if (!appOpened) {
+                        console.log('[Deep Link] App not detected, redirecting to App Store');
+                        window.location.href = CONFIG.iosAppStoreUrl;
+                    }
+                    document.removeEventListener('visibilitychange', visibilityHandler);
                 }, 2000);
 
             } else {
