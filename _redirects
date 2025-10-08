@@ -4,7 +4,7 @@
 / /index.html 200
 
 # Serve specific deep link paths directly (don't redirect to fallback)
-/create-portfolio /index.html 200
+/create_portfolio /index.html 200
 
 # Only redirect unknown paths to fallback
 /* /fallback.html 404

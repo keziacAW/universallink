@@ -19,7 +19,7 @@
     <script>
         // Configuration
         const CONFIG = {
-            universalLinkDomain: 'https://awuniversal.pages.dev',
+            universalLinkDomain: 'https://universallink-eku.pages.dev',
             iosAppStoreUrl: 'https://apps.apple.com/id/app/autowealth/id1582808842',
             androidPlayStoreUrl: 'https://play.google.com/store/apps/developer?id=AUTOWEALTH+PTE+LTD',
             appDetectionTimeout: 1000
@@ -28,8 +28,8 @@
         // Get URL parameters
         function getParams() {
             const urlParams = new URLSearchParams(window.location.search);
-            // Use hyphen to match AASA file
-            const path = urlParams.get('path') || window.location.pathname.substring(1) || 'create-portfolio';
+            // Use underscore for app routing
+            const path = urlParams.get('path') || window.location.pathname.substring(1) || 'create_portfolio';
 
             // Get all other params except 'path'
             const otherParams = {};
@@ -39,8 +39,8 @@
                 }
             }
 
-            // Add default type if not provided and path is create-portfolio
-            if (!otherParams.type && path === 'create-portfolio') {
+            // Add default type if not provided and path is create_portfolio
+            if (!otherParams.type && path === 'create_portfolio') {
                 otherParams.type = 'cpf';
             }
 
@@ -99,44 +99,15 @@
 
             console.log('[Deep Link] Universal Link:', universalLink);
 
-            // For iOS: If this page loads, Universal Link failed
-            // Try custom scheme as backup, then fallback to store
+            // For iOS: If this page loads, Universal Link didn't work
+            // App is not installed, redirect to App Store
             if (platform === 'ios') {
-                console.log('[Deep Link] iOS: Universal Link failed, trying custom scheme');
-
-                // Convert hyphen to underscore for app routing (create-portfolio → create_portfolio)
-                const appPath = path.replace(/-/g, '_');
-                const customScheme = `autowealth://${appPath}${queryString ? '?' + queryString : ''}`;
-                let appOpened = false;
-
-                // Detect if user leaves the page (app opened successfully)
-                const visibilityHandler = () => {
-                    if (document.hidden || document.visibilityState === 'hidden') {
-                        appOpened = true;
-                        console.log('[Deep Link] App opened successfully, canceling store redirect');
-                    }
-                };
-
-                document.addEventListener('visibilitychange', visibilityHandler);
-                window.addEventListener('blur', () => { appOpened = true; });
-
-                // Try to open via custom scheme
-                window.location.href = customScheme;
-
-                // If app doesn't open within 2 seconds, go to App Store
-                setTimeout(() => {
-                    if (!appOpened) {
-                        console.log('[Deep Link] App not detected, redirecting to App Store');
-                        window.location.href = CONFIG.iosAppStoreUrl;
-                    }
-                    document.removeEventListener('visibilitychange', visibilityHandler);
-                }, 2000);
+                console.log('[Deep Link] iOS: App not installed, redirecting to App Store');
+                window.location.href = CONFIG.iosAppStoreUrl;
 
             } else {
                 // Android: Use Intent URL for better detection
-                // Convert hyphen to underscore for app routing (create-portfolio → create_portfolio)
-                const appPath = path.replace(/-/g, '_');
-                const intentUrl = `intent://${appPath}${queryString ? '?' + queryString : ''}#Intent;scheme=autowealth;package=sg.autowealth.mobile;S.browser_fallback_url=${encodeURIComponent(CONFIG.androidPlayStoreUrl)};end`;
+                const intentUrl = `intent://${path}${queryString ? '?' + queryString : ''}#Intent;scheme=autowealth;package=sg.autowealth.mobile;S.browser_fallback_url=${encodeURIComponent(CONFIG.androidPlayStoreUrl)};end`;
 
                 console.log('[Deep Link] Android: Intent URL:', intentUrl);
                 window.location.href = intentUrl;
