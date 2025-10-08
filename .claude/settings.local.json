@@ -5,7 +5,8 @@
       "Bash(git commit -m \"$(cat <<''EOF''\nFix Universal Link fallback behavior with custom scheme detection\n\n- Add custom scheme (autowealth://) as backup when Universal Link fails to open app\n- Implement 2-second timeout before redirecting to App Store\n- Fix path consistency to use hyphens (create-portfolio) matching AASA file\n- Update _redirects to properly serve index.html for deep link paths\n- Enhance apple-app-site-association with components array and webcredentials\n\nThis ensures better app detection and smoother fallback experience when\nUniversal Links don''t trigger (e.g., when opened directly in browser).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git push:*)",
       "Bash(git commit:*)",
-      "Read(//Users/keziac/Desktop/Mobileapp/autowealth_mobile_v3/**)"
+      "Read(//Users/keziac/Desktop/Mobileapp/autowealth_mobile_v3/**)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
