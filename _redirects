@@ -1,9 +1,9 @@
 /.well-known/assetlinks.json /assetlinks.json 200
 
-# Serve index.html for root
-/ /index.html 200
+# Serve landing page for root
+/ /landing.html 200
 
-# Serve specific deep link paths directly (don't redirect to fallback)
+# Serve index.html for deep link paths (Universal Link entry point)
 /create_portfolio /index.html 200
 
 # Only redirect unknown paths to fallback
