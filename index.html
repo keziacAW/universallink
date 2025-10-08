@@ -99,12 +99,21 @@
 
             console.log('[Deep Link] Universal Link:', universalLink);
 
-            // For iOS: Universal Link handles app detection automatically
+            // For iOS: If this page loads, Universal Link failed
+            // Try custom scheme as backup, then fallback to store
             if (platform === 'ios') {
-                console.log('[Deep Link] iOS: App not installed, redirecting to App Store');
-                // If this page loads, it means Universal Link didn't open the app
-                // So the app is not installed - redirect to store
-                window.location.href = CONFIG.iosAppStoreUrl;
+                console.log('[Deep Link] iOS: Universal Link failed, trying custom scheme');
+
+                const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
+
+                // Try to open via custom scheme
+                window.location.href = customScheme;
+
+                // If app doesn't open within 2 seconds, go to App Store
+                setTimeout(() => {
+                    console.log('[Deep Link] App not detected, redirecting to App Store');
+                    window.location.href = CONFIG.iosAppStoreUrl;
+                }, 2000);
 
             } else {
                 // Android: Use Intent URL for better detection
