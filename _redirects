@@ -1,7 +1,4 @@
 /.well-known/assetlinks.json /assetlinks.json 200
 
-# Serve index.html for deep link paths (Universal Link entry point)
+# Serve index.html for Universal Link paths
 /create_portfolio /index.html 200
-
-# Only redirect unknown paths to fallback
-/* /fallback.html 404
