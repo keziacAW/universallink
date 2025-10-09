@@ -8,8 +8,9 @@
                     "/",
                     "/create_portfolio",
                     "/create_portfolio/*",
-                    "/fund_portfolio",
-                    "/fund_portfolio/*"
+                    "/mobile",
+                    "/mobile/create_portfolio",
+                    "/mobile/create_portfolio/*"
                 ],
                 "components": [
                     {
@@ -25,12 +26,16 @@
                         "comment": "Matches create_portfolio with any subpath"
                     },
                     {
-                        "/": "/fund_portfolio",
-                        "comment": "Matches fund_portfolio path"
+                        "/": "/mobile",
+                        "comment": "Matches mobile root path"
                     },
                     {
-                        "/": "/fund_portfolio/*",
-                        "comment": "Matches fund_portfolio with any subpath"
+                        "/": "/mobile/create_portfolio",
+                        "comment": "Matches mobile/create_portfolio path"
+                    },
+                    {
+                        "/": "/mobile/create_portfolio/*",
+                        "comment": "Matches mobile/create_portfolio with any subpath"
                     }
                 ]
             }

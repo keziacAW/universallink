@@ -112,12 +112,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             let path = window.location.pathname.substring(1);
 
-            console.log('[DEBUG] Original pathname:', window.location.pathname);
-            console.log('[DEBUG] Path before replace:', path);
-
             path = path.replace(/^mobile\//, '');
-
-            console.log('[DEBUG] Path after replace:', path);
 
             const otherParams = {};
             for (const [key, value] of urlParams.entries()) {
@@ -129,9 +124,6 @@
             if (!otherParams.type && path === 'create_portfolio') {
                 otherParams.type = 'cpf';
             }
-
-            console.log('[DEBUG] Final path:', path);
-            console.log('[DEBUG] Final params:', otherParams);
 
             return {
                 path: path,
@@ -170,11 +162,9 @@
             const queryString = new URLSearchParams(params).toString();
 
             if (platform === 'ios') {
-                const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
-
-                alert('DEBUG: Custom scheme = ' + customScheme);
-
                 document.getElementById('action').textContent = 'Opening AutoWealth...';
+
+                const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
 
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
