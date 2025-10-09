@@ -7,7 +7,9 @@
                 "paths": [
                     "/",
                     "/create_portfolio",
-                    "/create_portfolio/*"
+                    "/create_portfolio/*",
+                    "/fund_portfolio",
+                    "/fund_portfolio/*"
                 ],
                 "components": [
                     {
@@ -21,6 +23,14 @@
                     {
                         "/": "/create_portfolio/*",
                         "comment": "Matches create_portfolio with any subpath"
+                    },
+                    {
+                        "/": "/fund_portfolio",
+                        "comment": "Matches fund_portfolio path"
+                    },
+                    {
+                        "/": "/fund_portfolio/*",
+                        "comment": "Matches fund_portfolio with any subpath"
                     }
                 ]
             }
