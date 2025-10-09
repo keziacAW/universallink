@@ -170,11 +170,11 @@
             const queryString = new URLSearchParams(params).toString();
 
             if (platform === 'ios') {
-                document.getElementById('action').textContent = 'Opening AutoWealth...';
-
                 const customScheme = `autowealth://${path}${queryString ? '?' + queryString : ''}`;
 
-                console.log('[DEBUG] Custom scheme URL:', customScheme);
+                alert('DEBUG: Custom scheme = ' + customScheme);
+
+                document.getElementById('action').textContent = 'Opening AutoWealth...';
 
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
