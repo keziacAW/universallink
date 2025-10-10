@@ -1,7 +1,6 @@
 /.well-known/assetlinks.json /assetlinks.json 200
 
 # Serve index.html for Universal Link paths
-/create_portfolio /index.html 200
 /mobile /mobile/index.html 200
 /mobile/create_portfolio /mobile/index.html 200
 /mobile/* /mobile/index.html 200
