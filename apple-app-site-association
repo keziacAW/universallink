@@ -5,9 +5,6 @@
             {
                 "appID": "6KKG662T5W.sg.autowealth.mobile",
                 "paths": [
-                    "/",
-                    "/create_portfolio",
-                    "/create_portfolio/*",
                     "/mobile",
                     "/mobile/create_portfolio",
                     "/mobile/create_portfolio/*"
