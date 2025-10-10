@@ -7,7 +7,10 @@
                 "paths": [
                     "/",
                     "/create_portfolio",
-                    "/create_portfolio/*"
+                    "/create_portfolio/*",
+                    "/mobile",
+                    "/mobile/create_portfolio",
+                    "/mobile/create_portfolio/*"
                 ],
                 "components": [
                     {
