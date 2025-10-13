@@ -1,4 +1,3 @@
-/.well-known/assetlinks.json /assetlinks.json 200
 
 # Serve index.html for Universal Link paths
 /mobile /mobile/index.html 200
